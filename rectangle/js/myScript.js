@@ -21,7 +21,6 @@ function draw(x, y, to_right, to_bottom, side_step, down_step) {
   var rect_width = 400;
   var rect_height = 400;
   var rect_area = rect_width * rect_height;
-  var color = 0;
 
   var ctx = document.querySelector('canvas').getContext('2d');
   ctx.clearRect(0, 0, canvas_width, canvas_height); // clear canvas before drawing new frame
@@ -29,7 +28,8 @@ function draw(x, y, to_right, to_bottom, side_step, down_step) {
   ctx.translate(50, 50); // move origin of coordinats
 
   ctx.strokeStyle = 'black';
-  ctx.strokeRect(0, 0, rect_width, rect_height);
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-1, -1, rect_width + 2, rect_height + 2);
 
   ctx.fillStyle = areaToColor(x, y, rect_area);
   ctx.fillRect(0, 0, x, y); // upper left rectangle
@@ -42,6 +42,15 @@ function draw(x, y, to_right, to_bottom, side_step, down_step) {
 
   ctx.fillStyle = areaToColor(rect_width - x, rect_height - y, rect_area);
   ctx.fillRect(x, y, rect_width - x, rect_height - y); // lower right rectangle
+
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(400, y);
+  ctx.moveTo(x, 0);
+  ctx.lineTo(x, 400);
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
   // logic to decide animation for the next frame
   if (to_right) {
@@ -94,7 +103,7 @@ function getRandomInt(min, max) {
 
 // computes color from area, smaller the area resuls darker color
 function areaToColor(x, y, full_area) {
-  var color = Math.floor(30 + (x * y / full_area) * 150);
+  var color = Math.floor(20 + (x * y / full_area) * 170);
   return "rgb(" + color + ", " + color + ", " + 255 + ")";
 }
 
