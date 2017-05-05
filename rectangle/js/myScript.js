@@ -31,25 +31,16 @@ function draw(x, y, to_right, to_bottom, side_step, down_step) {
   ctx.strokeStyle = 'black';
   ctx.strokeRect(0, 0, rect_width, rect_height);
 
-  color = Math.floor(x * y / rect_area * 255);
-  ctx.fillStyle = "rgb(" + color + ", " + color + ", " + 255 + ")";
-  // ctx.fillStyle = 'green';
+  ctx.fillStyle = areaToColor(x, y, rect_area);
   ctx.fillRect(0, 0, x, y); // upper left rectangle
 
-  color = Math.floor((rect_width - x) * y / rect_area * 255);
-  ctx.fillStyle = "rgb(" + color + ", " + color + ", " + 255 + ")";
-  // ctx.fillStyle = 'red';
+  ctx.fillStyle = areaToColor(rect_width - x, y, rect_area);
   ctx.fillRect(x, 0, rect_width - x, y); // upper right rectangle
 
-  color = Math.floor(x * (rect_height - y) / rect_area * 255);
-  ctx.fillStyle = "rgb(" + color + ", " + color + ", " + 255 + ")";
-  // ctx.fillStyle = 'blue';
+  ctx.fillStyle = areaToColor(x, rect_height - y, rect_area);
   ctx.fillRect(0, y, x, rect_height - y); // lower left rectangle
 
-
-  color = Math.floor((rect_width - x) * (rect_height - y) / rect_area * 255);
-  ctx.fillStyle = "rgb(" + color + ", " + color + ", " + 255 + ")";
-  // ctx.fillStyle = 'yellow';
+  ctx.fillStyle = areaToColor(rect_width - x, rect_height - y, rect_area);
   ctx.fillRect(x, y, rect_width - x, rect_height - y); // lower right rectangle
 
   // logic to decide animation for the next frame
@@ -99,6 +90,12 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// computes color from area, smaller the area resuls darker color
+function areaToColor(x, y, full_area) {
+  var color = Math.floor(30 + (x * y / full_area) * 150);
+  return "rgb(" + color + ", " + color + ", " + 255 + ")";
 }
 
 rectangle.init();
