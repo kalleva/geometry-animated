@@ -33,15 +33,15 @@ function draw(distance, direction) {
   ctx.transform(1, 0, 0, -1, 0, canvasHeight); // flip coordinate axes
   ctx.translate(50, 50); // move origin of coordinat
 
+  var fullDist = 300;
   var pA = point(0, 0);
-  var pB = point(120, 400);
-  var pC = point(400, 0);
-  var fullDist = 400;
+  var pB = point(90, 300);
+  var pC = point(300, 0);
 
   var fullArea = 1 / 2 * (pB.x + pC.x) * pB.y - 1 / 2 * (pB.x * pB.y);
 
-  pK = linearMotion(pB, pA, distance / fullDist);
-  pL = linearMotion(pB, pC, distance / fullDist);
+  var pK = linearMotion(pB, pA, distance / fullDist);
+  var pL = linearMotion(pB, pC, distance / fullDist);
   var pO = intersection(pA, pL, pC, pK);
 
   // Computes areas of sectors AOC, AOK, LOC, BLOC
