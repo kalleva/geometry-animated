@@ -24,7 +24,6 @@ function next_frame(timestamp, distance, direction) {
 }
 
 function draw(distance, direction) {
-  // debugger;
   var canvasWidth = 500;
   var canvasHeight = 500;
   var ctx = document.querySelector('canvas').getContext('2d');
@@ -39,18 +38,11 @@ function draw(distance, direction) {
   var pC = point(400, 0);
   var fullDist = 400;
 
-
   var fullArea = 1 / 2 * (pB.x + pC.x) * pB.y - 1 / 2 * (pB.x * pB.y);
 
   pK = linearMotion(pB, pA, distance / fullDist);
   pL = linearMotion(pB, pC, distance / fullDist);
-
   var pO = intersection(pA, pL, pC, pK);
-  // console.log(pO);
-  var phO = point(0, pO.y);
-  var phK = point(0, pK.y);
-  var phL = point(0, pL.y);
-  var phB = point(0, pB.y);
 
   // Computes areas of sectors AOC, AOK, LOC, BLOC
   // To compute areas can use projections of points on vertical line going through
@@ -61,14 +53,14 @@ function draw(distance, direction) {
   // s_LOC = s_ACLhL - s_OhOLhL - s_AhOOC
   // s_BLOC = s_OhOLhL + s_hBBLhL - s_hKKOhO - s_BhBhKK
 
-  var s_AOhO = 1 / 2 * (phO.y * pO.x);
-  var s_AhOOC = 1 / 2 * (pO.x + pC.x) * phO.y;
-  var s_hKKOhO = 1 / 2 * (pK.x + pO.x) * (phK.y - phO.y);
-  var s_AKhK = 1 / 2 * (phK.y * pK.x);
-  var s_ACLhL = 1 / 2 * (pL.x + pC.x) * phL.y;
-  var s_OhOLhL = 1 / 2 * (pL.x + pO.x) * (phL.y - phO.y);
-  var s_hBBLhL = 1 / 2 * (pB.x + pL.x) * (phB.y - phL.y);
-  var s_BhBhKK = 1 / 2 * (pB.x + pK.x) * (phB.y - phK.y);
+  var s_AOhO = 1 / 2 * (pO.y * pO.x);
+  var s_AhOOC = 1 / 2 * (pO.x + pC.x) * pO.y;
+  var s_hKKOhO = 1 / 2 * (pK.x + pO.x) * (pK.y - pO.y);
+  var s_AKhK = 1 / 2 * (pK.y * pK.x);
+  var s_ACLhL = 1 / 2 * (pL.x + pC.x) * pL.y;
+  var s_OhOLhL = 1 / 2 * (pL.x + pO.x) * (pL.y - pO.y);
+  var s_hBBLhL = 1 / 2 * (pB.x + pL.x) * (pB.y - pL.y);
+  var s_BhBhKK = 1 / 2 * (pB.x + pK.x) * (pB.y - pK.y);
 
   var s_AOC = s_AhOOC - s_AOhO;
   var s_AOK = s_AOhO + s_hKKOhO - s_AKhK;
@@ -106,13 +98,14 @@ function draw(distance, direction) {
   ctx.fillStyle = areaToColor(s_BLOC, fullArea);
   ctx.fill();
 
-  //draws AL and CK
+  // draws AL and CK
   ctx.moveTo(pK.x, pK.y);
   ctx.lineTo(pC.x, pC.y);
   ctx.moveTo(pL.x, pL.y);
   ctx.lineTo(pA.x, pA.y);
   ctx.stroke();
 
+  // draws triangle contour
   ctx.beginPath();
   ctx.moveTo(pA.x, pA.y);
   ctx.lineTo(pB.x, pB.y);
@@ -164,8 +157,8 @@ return point(xi, yi);
 
 // computes color from area, smaller the area resuls darker color
 function areaToColor(sector, fullArea) {
-  var color = Math.floor(20 + (sector / fullArea) * 170);
-  return "rgb(" + color + ", " + color + ", " + 255 + ")";
+  var color = Math.floor(20 + (sector / fullArea) * 190);
+  return "rgb(" + color + ", " + 200 + ", " + (color + 10) + ")";
 }
 
 function point(xi, yi) {
@@ -176,7 +169,6 @@ function point(xi, yi) {
 // fist line - points p11, p12
 // second line - points p21, p22
 function intersection(p11, p12, p21, p22){
-  // debugger;
   var i = point(0, 0);
   var slope1 = (p12.y - p11.y) / (p12.x - p11.x);
   var slope2 = (p22.y - p21.y) / (p22.x - p21.x);
